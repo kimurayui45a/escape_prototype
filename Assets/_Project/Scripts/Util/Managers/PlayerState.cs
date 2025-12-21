@@ -5,7 +5,7 @@ using UnityEngine;
 /// ゲーム中のプレイヤー状態を保持するコンポーネント。
 /// 簡易的に Inspector から値を編集できるように、SerializeField の裏フィールドを用意している。
 /// </summary>
-public class PlayerState : SingletonMonoBehaviour<PlayerState>
+public class PlayerState : MonoBehaviour
 {
     // ★ Inspector で編集する実体（裏フィールド）
     [Header("Player Status (Editable in Inspector)")]

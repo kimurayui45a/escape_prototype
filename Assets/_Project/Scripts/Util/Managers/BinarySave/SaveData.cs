@@ -59,14 +59,14 @@ public class SaveData
         SaveParam.Player.Validate();
     }
 
-    // ★ 追加：橋渡しを SaveData 側に用意しておくと呼び出し側が汚れにくい
+    // 橋渡しを SaveData 側に用意しておくと呼び出し側が汚れにくい
     public void CaptureFromRuntime(int day, PlayerState playerState)
     {
         SaveParam.Day = day;
         SaveParam.Player = (playerState != null) ? playerState.ToData() : new PlayerData();
     }
 
-    public void ApplyToRuntime(PlayerState playerState, out int day) // ★
+    public void ApplyToRuntime(PlayerState playerState, out int day)
     {
         day = SaveParam.Day;
         if (playerState != null) playerState.Apply(SaveParam.Player);

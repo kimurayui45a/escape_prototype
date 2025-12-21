@@ -5,7 +5,7 @@ using UnityEngine;
 /// 動作テスト用コンポーネント。
 /// Inspector値を持ち、Save/Loadを呼び出してデータが復元されるか試す想定。
 /// </summary>
-public class SaveTest : SingletonMonoBehaviour<SaveTest>
+public class SaveTest : MonoBehaviour
 {
     [SerializeField]
     int day = 0;
@@ -14,6 +14,9 @@ public class SaveTest : SingletonMonoBehaviour<SaveTest>
 
     // 実際に保存/ロード対象とするデータ
     SaveData saveData = new SaveData();
+
+    // ここでSaveDataのPlayerStateにアクセスできるインサートを各
+    public PlayerState PlayerState => playerState;
 
     /// <summary>
     /// 保存処理を呼ぶ（UIボタン等から呼び出す想定）

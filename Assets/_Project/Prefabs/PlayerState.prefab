@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4493746298656517038
+--- !u!1 &4819157313213977446
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4923555768458212755}
-  - component: {fileID: 8876639803626869901}
+  - component: {fileID: 2456966194349493184}
+  - component: {fileID: 4450500286965378515}
   m_Layer: 0
   m_Name: PlayerState
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4923555768458212755
+--- !u!4 &2456966194349493184
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4493746298656517038}
+  m_GameObject: {fileID: 4819157313213977446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,20 +32,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8876639803626869901
+--- !u!114 &4450500286965378515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4493746298656517038}
+  m_GameObject: {fileID: 4819157313213977446}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e52159c7b2748947a762055f882d74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   level: 10
-  exp: 100
-  hp: 2
-  maxHp: 200
-  favorValue: 50
+  exp: 10
+  hp: 1
+  maxHp: 100
+  favorValue: 10
