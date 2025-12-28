@@ -17,7 +17,7 @@ public class NextSceneButton : MonoBehaviour
     /// <summary>
     /// 遷移先のシーン名（Build Settings に登録済みの名前）。
     /// </summary>
-    [SerializeField] string titleScene;
+    [SerializeField] string nextSceneName;
 
     void Start()
     {
@@ -28,9 +28,9 @@ public class NextSceneButton : MonoBehaviour
             return;
         }
 
-        if (string.IsNullOrEmpty(titleScene))
+        if (string.IsNullOrEmpty(nextSceneName))
         {
-            Debug.LogError("[NextSceneButton] titleScene is empty.");
+            Debug.LogError("[NextSceneButton] nextSceneName is empty.");
             return;
         }
 
@@ -55,19 +55,21 @@ public class NextSceneButton : MonoBehaviour
     /// </summary>
     void OnClickNext()
     {
+        var fadeManager = Manager.Instance.FadeManager;
+
         // 多重クリック防止
         buttonNextScene.interactable = false;
 
         // FadeManager が無い場合の保険
-        if (FadeManager.Instance == null)
+        if (fadeManager == null)
         {
-            Debug.LogError("[NextSceneButton] FadeManager.Instance is null. Ensure FadeManager exists in the scene.");
+            Debug.LogError("[NextSceneButton] FadeManager がありません。");
             buttonNextScene.interactable = true;
             return;
         }
 
         // 暗転～ロード～シーン切替を FadeManager 側で実行
-        FadeManager.Instance.LoadSceneWithFade(titleScene);
+        fadeManager.LoadSceneWithFade(nextSceneName);
 
         // 注意：
         // ここで interactable を戻さない。

@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e52159c7b2748947a762055f882d74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 10
-  exp: 10
+  level: 1
+  exp: 1
   hp: 1
   maxHp: 100
-  favorValue: 10
+  favorValue: 2

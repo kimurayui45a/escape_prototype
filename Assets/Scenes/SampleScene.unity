@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5f4971f237d3e4db0ca6e871e11cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventCamera: {fileID: 1440903481}
+  eventCamera: {fileID: 1440903483}
   colliderEvent: {fileID: 1477160411}
 --- !u!1 &330585543
 GameObject:
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 408744239}
   - component: {fileID: 408744238}
   - component: {fileID: 408744244}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
 --- !u!1 &581260092
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5f4971f237d3e4db0ca6e871e11cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventCamera: {fileID: 496846098}
+  eventCamera: {fileID: 496846100}
   colliderEvent: {fileID: 1279502576}
 --- !u!1 &832575517
 GameObject:
@@ -1443,7 +1443,7 @@ GameObject:
   - component: {fileID: 1138302350}
   - component: {fileID: 1138302353}
   - component: {fileID: 1138302352}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1564,7 +1564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5f4971f237d3e4db0ca6e871e11cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventCamera: {fileID: 1888318264}
+  eventCamera: {fileID: 1888318267}
   colliderEvent: {fileID: 545124620}
 --- !u!1 &1279502574
 GameObject:
@@ -1615,7 +1615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
 --- !u!135 &1279502577
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1977,7 +1977,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
 --- !u!65 &1477160412
 BoxCollider:
   m_ObjectHideFlags: 0

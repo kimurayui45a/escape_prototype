@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// 動作テスト用コンポーネント。
+/// セーブ、ロード処理の呼び出し用のコンポーネント。
 /// Inspector値を持ち、Save/Loadを呼び出してデータが復元されるか試す想定。
 /// </summary>
 public class SaveTest : MonoBehaviour
