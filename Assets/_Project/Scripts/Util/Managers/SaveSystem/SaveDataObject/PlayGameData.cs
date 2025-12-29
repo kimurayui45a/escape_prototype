@@ -10,8 +10,8 @@ public class PlayGameData
     // 最終セーブ日時
     public long LastPlaySaveTime = 000;
 
-    // ファイル番号（1～3）
-    public int PlayFileNumber = 1;
+    // スロット番号（1～3、ファイル番号）
+    public int PlaySlotNumber = 1;
 
     // 終了時にいたシーン
     public string LastSceneId = "scene_natural";

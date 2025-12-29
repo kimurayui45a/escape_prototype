@@ -37,7 +37,7 @@ public class SettingManager
     {
         if (data == null) data = new SettingData();
 
-        mute = data.Mute;
+        mute = data.MuteFlag;
         bgm = NormalizeVolume(data.BGM);
         se = NormalizeVolume(data.SE);
         textSpeed = NormalizeTextSpeed(data.TextSpeed);
@@ -56,7 +56,7 @@ public class SettingManager
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
-        data.Mute = mute;
+        data.MuteFlag = mute;
         data.BGM = bgm;
         data.SE = se;
         data.TextSpeed = textSpeed;
@@ -67,7 +67,7 @@ public class SettingManager
 
     // ---- 読み取り用プロパティ ----
 
-    public bool Mute => mute;
+    public bool MuteFlag => mute;
     public int BGM => bgm;
     public int SE => se;
     public int TextSpeed => textSpeed;

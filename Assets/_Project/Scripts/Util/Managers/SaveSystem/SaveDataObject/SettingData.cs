@@ -8,7 +8,7 @@ using UnityEngine;
 public class SettingData
 {
     // ミュート
-    public bool Mute = false;
+    public bool MuteFlag = false;
 
     // BGM音量（1～100）
     public int BGM = 50;

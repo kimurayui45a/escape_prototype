@@ -1,109 +1,110 @@
-using System;
+ï»¿using System;
 using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// ƒZ[ƒu/ƒ[ƒh‚ÌuI/Oiƒtƒ@ƒCƒ‹‘€ìjv‚ğ’S“–‚·‚éƒNƒ‰ƒXB
+/// ã‚»ãƒ¼ãƒ–/ãƒ­ãƒ¼ãƒ‰ã®ã€ŒI/Oï¼ˆãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œï¼‰ã€ã‚’æ‹…å½“ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 /// 
-/// –ğŠ„F
-/// - •Û‘¶æƒfƒBƒŒƒNƒgƒŠ/ƒpƒX‚ÌŒˆ’èipersistentDataPath ”z‰º‚È‚Çj
-/// - ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‘‚«iWriteAllBytes/ReadAllBytesj
-/// - ”j‘¹‚µ‚É‚­‚¢•Û‘¶itmp‚É‘‚¢‚Ä‚©‚ç’uŠ·‚·‚éƒAƒgƒ~ƒbƒN•Û‘¶j
-/// - ƒwƒbƒ_iSaveFileFormatj‚Æ payloadiSaveDataj‚ğ‘g‚İ—§‚Ä‚Ä 1 ƒtƒ@ƒCƒ‹‚É‚·‚é
-/// - Load ‚ÉƒtƒH[ƒ}ƒbƒgƒo[ƒWƒ‡ƒ“‚Å“Ç‚İ•ª‚¯iƒ}ƒCƒOƒŒ[ƒVƒ‡ƒ“‚Ì“üŒûj
+/// å½¹å‰²ï¼š
+/// - ä¿å­˜å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª/ãƒ‘ã‚¹ã®æ±ºå®šï¼ˆpersistentDataPath é…ä¸‹ãªã©ï¼‰
+/// - ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿æ›¸ãï¼ˆWriteAllBytes/ReadAllBytesï¼‰
+/// - ç ´æã—ã«ãã„ä¿å­˜ï¼ˆtmpã«æ›¸ã„ã¦ã‹ã‚‰ç½®æ›ã™ã‚‹ã‚¢ãƒˆãƒŸãƒƒã‚¯ä¿å­˜ï¼‰
+/// - ãƒ˜ãƒƒãƒ€ï¼ˆSaveFileFormatï¼‰ã¨ payloadï¼ˆSaveDataï¼‰ã‚’çµ„ã¿ç«‹ã¦ã¦ 1 ãƒ•ã‚¡ã‚¤ãƒ«ã«ã™ã‚‹
+/// - Load æ™‚ã«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§èª­ã¿åˆ†ã‘ï¼ˆãƒã‚¤ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®å…¥å£ï¼‰
 /// 
-/// ’ˆÓF
-/// - MonoBehaviour ‚Å‚Í‚È‚¢‚½‚ßƒV[ƒ“‘JˆÚ‚µ‚Ä‚à instance ‚Í static QÆ‚Æ‚µ‚Äc‚éiUnityI—¹‚ÅÁ‚¦‚éj
-/// - ˆÃ†‰»/ˆ³k‚È‚Çupayload‘S‘Ì‚É‘Î‚·‚éˆ—v‚ÍŒ´‘¥ SaveManager ‚Ås‚¤‚ÆÓ–±‚ª•ª—£‚µ‚â‚·‚¢
+/// æ³¨æ„ï¼š
+/// - MonoBehaviour ã§ã¯ãªã„ãŸã‚ã‚·ãƒ¼ãƒ³é·ç§»ã—ã¦ã‚‚ instance ã¯ static å‚ç…§ã¨ã—ã¦æ®‹ã‚‹ï¼ˆUnityçµ‚äº†ã§æ¶ˆãˆã‚‹ï¼‰
+/// - æš—å·åŒ–/åœ§ç¸®ãªã©ã€Œpayloadå…¨ä½“ã«å¯¾ã™ã‚‹å‡¦ç†ã€ã¯åŸå‰‡ SaveManager ã§è¡Œã†ã¨è²¬å‹™ãŒåˆ†é›¢ã—ã‚„ã™ã„
 /// </summary>
 public class SaveManager
 {
     /// <summary>
-    /// ƒVƒ“ƒOƒ‹ƒgƒ“À‘ÌB
+    /// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³å®Ÿä½“ã€‚
     /// </summary>
     private static SaveManager instance;
 
     /// <summary>
-    /// ƒVƒ“ƒOƒ‹ƒgƒ““üŒûB
-    /// ‰‰ñƒAƒNƒZƒX‚É new SaveManager() ‚Å¶¬‚·‚éB
+    /// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³å…¥å£ã€‚
+    /// åˆå›ã‚¢ã‚¯ã‚»ã‚¹æ™‚ã« new SaveManager() ã§ç”Ÿæˆã™ã‚‹ã€‚
     /// </summary>
     public static SaveManager Instance => instance ?? (instance = new SaveManager());
 
     /// <summary>
-    /// ƒZ[ƒuƒf[ƒ^‚Ì•Û‘¶æƒfƒBƒŒƒNƒgƒŠ‚ğ•Ô‚·B
-    /// —áF{persistentDataPath}/save
+    /// ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’è¿”ã™ã€‚
+    /// ä¾‹ï¼š{persistentDataPath}/save
     /// </summary>
     string MakeSaveDir()
         => Path.Combine(Application.persistentDataPath, "save");
 
     /// <summary>
-    /// fileName ‚©‚ç•Û‘¶ƒtƒ@ƒCƒ‹‚Ìƒtƒ‹ƒpƒX‚ğ¶¬‚·‚éB
-    /// —áF{persistentDataPath}/save/saveData.dat
+    /// fileName ã‹ã‚‰ä¿å­˜ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+    /// ä¾‹ï¼š{persistentDataPath}/save/saveData.dat
     /// </summary>
     string MakeSavePath(string fileName)
         => Path.Combine(MakeSaveDir(), fileName);
 
     /// <summary>
-    /// SaveData ‚ğw’èƒtƒ@ƒCƒ‹–¼‚Å•Û‘¶‚·‚éB
+    /// SaveData ã‚’æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«åã§ä¿å­˜ã™ã‚‹ã€‚
     /// 
-    /// ƒtƒ@ƒCƒ‹\‘¢F
-    /// [SaveFileFormatƒwƒbƒ_] + [payload(SaveData‚Ì’†g)]
+    /// ãƒ•ã‚¡ã‚¤ãƒ«æ§‹é€ ï¼š
+    /// [SaveFileFormatãƒ˜ãƒƒãƒ€] + [payload(SaveDataã®ä¸­èº«)]
     /// 
-    /// ”j‘¹‘ÎôF
-    /// - ‚¢‚«‚È‚è–{”Ôƒtƒ@ƒCƒ‹‚ğ‘‚«Š·‚¦‚¸A.tmp ‚É‘‚¢‚Ä‚©‚ç’uŠ·‚·‚éiƒAƒgƒ~ƒbƒN•Û‘¶j
+    /// ç ´æå¯¾ç­–ï¼š
+    /// - ã„ããªã‚Šæœ¬ç•ªãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãæ›ãˆãšã€.tmp ã«æ›¸ã„ã¦ã‹ã‚‰ç½®æ›ã™ã‚‹ï¼ˆã‚¢ãƒˆãƒŸãƒƒã‚¯ä¿å­˜ï¼‰
     /// </summary>
     public void Save(SaveData saveData, string fileName)
     {
-        // •Û‘¶æ–{‘ÌƒpƒX
+        // ä¿å­˜å…ˆæœ¬ä½“ãƒ‘ã‚¹
         var path = MakeSavePath(fileName);
 
-        // ˆêƒtƒ@ƒCƒ‹ƒpƒXi“r’†‚Å—‚¿‚Ä‚à–{‘Ì‚ğ‰ó‚³‚È‚¢‚½‚ßj
+        // ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ï¼ˆé€”ä¸­ã§è½ã¡ã¦ã‚‚æœ¬ä½“ã‚’å£Šã•ãªã„ãŸã‚ï¼‰
         var tempPath = path + ".tmp";
 
-        // •Û‘¶æƒfƒBƒŒƒNƒgƒŠ
+        // ä¿å­˜å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
         var dir = MakeSaveDir();
 
         try
         {
-            // ƒfƒBƒŒƒNƒgƒŠ‚ª–³‚¯‚ê‚Îì¬
+            // ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒç„¡ã‘ã‚Œã°ä½œæˆ
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            // ---- payload ¶¬iƒQ[ƒ€ƒf[ƒ^–{‘Ìj----
-            // SaveData ‘¤‚Å JSON¨UTF8 bytes ‚ğì‚éiƒwƒbƒ_‚Í‚±‚±‚Å‚Íˆµ‚í‚È‚¢j
+            // ---- payload ç”Ÿæˆï¼ˆã‚²ãƒ¼ãƒ ãƒ‡ãƒ¼ã‚¿æœ¬ä½“ï¼‰----
+            // SaveData å´ã§ JSONâ†’UTF8 bytes ã‚’ä½œã‚‹ï¼ˆãƒ˜ãƒƒãƒ€ã¯ã“ã“ã§ã¯æ‰±ã‚ãªã„ï¼‰
             byte[] payload = saveData.ToPayloadBytes();
 
-            // ---- flagsi•K—v‚É‚È‚Á‚½‚ç Compressed/Encrypted ‚ğ—§‚Ä‚éj----
-            // —áFpayload ‚ğˆ³k‚µ‚½ê‡‚Í SaveFlags.Compressed ‚ğ•t‚¯‚éA‚È‚Ç
+            // ---- flagsï¼ˆå¿…è¦ã«ãªã£ãŸã‚‰ Compressed/Encrypted ã‚’ç«‹ã¦ã‚‹ï¼‰----
+            // ä¾‹ï¼špayload ã‚’åœ§ç¸®ã—ãŸå ´åˆã¯ SaveFlags.Compressed ã‚’ä»˜ã‘ã‚‹ã€ãªã©
             var flags = SaveFileFormat.SaveFlags.None;
 
-            // ---- ƒwƒbƒ_ + payload ‚ğ 1 ‚Â‚Ì byte[] ‚É‘g‚İ—§‚Ä‚é ----
-            // MemoryStream ‚É‘‚«‚İ ¨ ÅŒã‚É ToArray() ‚Åƒtƒ@ƒCƒ‹—p‚Ìbyte—ñ‚É‚·‚é
+            // ---- ãƒ˜ãƒƒãƒ€ + payload ã‚’ 1 ã¤ã® byte[] ã«çµ„ã¿ç«‹ã¦ã‚‹ ----
+            // MemoryStream ã«æ›¸ãè¾¼ã¿ â†’ æœ€å¾Œã« ToArray() ã§ãƒ•ã‚¡ã‚¤ãƒ«ç”¨ã®byteåˆ—ã«ã™ã‚‹
             byte[] fileBytes;
             using (var ms = new MemoryStream())
             using (var w = new BinaryWriter(ms))
             {
-                // ƒtƒ@ƒCƒ‹æ“ªFƒwƒbƒ_‘‚«‚İiMagic/FormatVersion/Flags/PayloadLengthj
+                // ãƒ•ã‚¡ã‚¤ãƒ«å…ˆé ­ï¼šãƒ˜ãƒƒãƒ€æ›¸ãè¾¼ã¿ï¼ˆMagic/FormatVersion/Flags/PayloadLengthï¼‰
                 SaveFileFormat.WriteHeader(w, flags, payload.Length);
 
-                // ƒwƒbƒ_‚Ì’¼ŒãFpayload ‚ğ¶ƒoƒCƒg‚Æ‚µ‚Ä‘‚­
-                // ¦ BinaryWriter.Write(byte[]) ‚Íu’·‚³î•ñ‚ğ•t‚¯‚¸‚ÉA‚»‚Ì‚Ü‚Ü‘‚­v
+                // ãƒ˜ãƒƒãƒ€ã®ç›´å¾Œï¼špayload ã‚’ç”Ÿãƒã‚¤ãƒˆã¨ã—ã¦æ›¸ã
+                // â€» BinaryWriter.Write(byte[]) ã¯ã€Œé•·ã•æƒ…å ±ã‚’ä»˜ã‘ãšã«ã€ãã®ã¾ã¾æ›¸ãã€
                 w.Write(payload);
 
-                // ”O‚Ì‚½‚ßƒtƒ‰ƒbƒVƒ…
+                // å¿µã®ãŸã‚ãƒ•ãƒ©ãƒƒã‚·ãƒ¥
                 w.Flush();
 
-                // MemoryStream ‚Ì’†g‚ğæ‚èo‚µ‚ÄAƒtƒ@ƒCƒ‹‚É‘‚¯‚éŒ`‚É‚·‚é
+                // MemoryStream ã®ä¸­èº«ã‚’å–ã‚Šå‡ºã—ã¦ã€ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ã‘ã‚‹å½¢ã«ã™ã‚‹
                 fileBytes = ms.ToArray();
             }
 
-            // ---- ƒAƒgƒ~ƒbƒN•Û‘¶itmp ¨ movej----
-            // 1) temp ‚É‘‚­
+            // ---- ã‚¢ãƒˆãƒŸãƒƒã‚¯ä¿å­˜ï¼ˆtmp â†’ moveï¼‰----
+            // 1) temp ã«æ›¸ã
+            if (File.Exists(tempPath)) File.Delete(tempPath);
             File.WriteAllBytes(tempPath, fileBytes);
 
-            // 2) Šù‘¶‚Ì–{‘Ì‚ª‚ ‚ê‚ÎÁ‚·iŠÂ‹«‚É‚æ‚Á‚Ä‚Í Move ‚ªã‘‚«‚Å‚«‚È‚¢‚½‚ßj
+            // 2) æ—¢å­˜ã®æœ¬ä½“ãŒã‚ã‚Œã°æ¶ˆã™ï¼ˆç’°å¢ƒã«ã‚ˆã£ã¦ã¯ Move ãŒä¸Šæ›¸ãã§ããªã„ãŸã‚ï¼‰
             if (File.Exists(path)) File.Delete(path);
 
-            // 3) temp ‚ğ–{‘Ì‚ÉƒŠƒl[ƒ€i’uŠ·j
+            // 3) temp ã‚’æœ¬ä½“ã«ãƒªãƒãƒ¼ãƒ ï¼ˆç½®æ›ï¼‰
             File.Move(tempPath, path);
 
             Debug.Log("Saved to " + path);
@@ -112,48 +113,48 @@ public class SaveManager
         {
             Debug.LogError($"Save failed: {e}");
 
-            // ƒGƒ‰[‚Í tmp ‚ªc‚é‰Â”\«‚ª‚ ‚é‚Ì‚Å‘|œ‚·‚éi‘|œ‚à—áŠO‚ğˆ¬‚è‚Â‚Ô‚·j
+            // ã‚¨ãƒ©ãƒ¼æ™‚ã¯ tmp ãŒæ®‹ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§æƒé™¤ã™ã‚‹ï¼ˆæƒé™¤ã‚‚ä¾‹å¤–ã‚’æ¡ã‚Šã¤ã¶ã™ï¼‰
             try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { }
         }
     }
 
     /// <summary>
-    /// w’èƒtƒ@ƒCƒ‹–¼‚©‚ç SaveData ‚ğƒ[ƒh‚·‚éB
+    /// æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ SaveData ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã€‚
     /// 
-    /// - ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¯‚ê‚Î null
-    /// - ƒwƒbƒ_‚ğ“Ç‚ñ‚ÅAƒtƒH[ƒ}ƒbƒgƒo[ƒWƒ‡ƒ“‚Å“Ç‚İ•û‚ğ•ªŠò‚·‚éiƒ}ƒCƒOƒŒ[ƒVƒ‡ƒ“‚Ì“üŒûj
+    /// - ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã‘ã‚Œã° null
+    /// - ãƒ˜ãƒƒãƒ€ã‚’èª­ã‚“ã§ã€ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§èª­ã¿æ–¹ã‚’åˆ†å²ã™ã‚‹ï¼ˆãƒã‚¤ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®å…¥å£ï¼‰
     /// </summary>
     public SaveData Load(string fileName)
     {
-        // “Ç‚İ‚İæƒpƒX
+        // èª­ã¿è¾¼ã¿å…ˆãƒ‘ã‚¹
         var path = MakeSavePath(fileName);
 
-        // –³‚¯‚ê‚Îƒ[ƒh•s”\
+        // ç„¡ã‘ã‚Œã°ãƒ­ãƒ¼ãƒ‰ä¸èƒ½
         if (!File.Exists(path)) return null;
 
         try
         {
-            // ƒtƒ@ƒCƒ‹‚ğŠÛ‚²‚Æƒƒ‚ƒŠ‚É“Ç‚İ‚Ş
-            // ¦ ƒZ[ƒuƒtƒ@ƒCƒ‹‚ª‹‘å‰»‚·‚éê‡‚Í Stream ‚Å’€Ÿ“Ç‚İ‚ª–]‚Ü‚µ‚¢
+            // ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸¸ã”ã¨ãƒ¡ãƒ¢ãƒªã«èª­ã¿è¾¼ã‚€
+            // â€» ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ãŒå·¨å¤§åŒ–ã™ã‚‹å ´åˆã¯ Stream ã§é€æ¬¡èª­ã¿ãŒæœ›ã¾ã—ã„
             byte[] bytes = File.ReadAllBytes(path);
 
-            // MemoryStream ‚ÉÚ‚¹‚Ä BinaryReader ‚Å‡‚É“Ç‚Ş
+            // MemoryStream ã«è¼‰ã›ã¦ BinaryReader ã§é †ã«èª­ã‚€
             using (var ms = new MemoryStream(bytes))
             using (var r = new BinaryReader(ms))
             {
-                // ---- ƒwƒbƒ_‚ğ“Ç‚Ş ----
-                // Magic/Version/Flags/PayloadLength ‚ğæ“¾‚µA•s³‚È‚ç—áŠO‚ª”ò‚Ô
+                // ---- ãƒ˜ãƒƒãƒ€ã‚’èª­ã‚€ ----
+                // Magic/Version/Flags/PayloadLength ã‚’å–å¾—ã—ã€ä¸æ­£ãªã‚‰ä¾‹å¤–ãŒé£›ã¶
                 var header = SaveFileFormat.ReadHeader(r);
 
-                // ---- ƒtƒH[ƒ}ƒbƒgƒo[ƒWƒ‡ƒ“‚Å“Ç‚İ•ª‚¯iƒ}ƒCƒOƒŒ[ƒVƒ‡ƒ“‚Ì“üŒûj----
-                // —áFcase 2: LoadV2(r, header); ‚ğ’Ç‰Á‚µ‚Ä‚¢‚­
+                // ---- ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§èª­ã¿åˆ†ã‘ï¼ˆãƒã‚¤ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®å…¥å£ï¼‰----
+                // ä¾‹ï¼šcase 2: LoadV2(r, header); ã‚’è¿½åŠ ã—ã¦ã„ã
                 switch (header.FormatVersion)
                 {
                     case 1:
                         return LoadV1(r, header);
 
                     default:
-                        // uV‚µ‚·‚¬‚évoru–¢’mv‚È‚ç’e‚­
+                        // ã€Œæ–°ã—ã™ãã‚‹ã€orã€ŒæœªçŸ¥ã€ãªã‚‰å¼¾ã
                         Debug.LogError($"Unsupported save format version: {header.FormatVersion}");
                         return null;
                 }
@@ -167,35 +168,35 @@ public class SaveManager
     }
 
     /// <summary>
-    /// ƒtƒH[ƒ}ƒbƒg v1 ‚Ì“Ç‚İ‚İB
+    /// ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ v1 ã®èª­ã¿è¾¼ã¿ã€‚
     /// 
-    /// - payloadLength •ª‚¾‚¯ ReadBytes ‚ÅØ‚èo‚·
-    /// - flags ‚É‰‚¶‚Ä•œ†/‰ğ“€i•K—v‚É‚È‚Á‚½‚çj‚ğs‚¤
-    /// - SaveData ‚É payload ‚ğ“n‚µ‚Ä•œŒ³‚·‚é
+    /// - payloadLength åˆ†ã ã‘ ReadBytes ã§åˆ‡ã‚Šå‡ºã™
+    /// - flags ã«å¿œã˜ã¦å¾©å·/è§£å‡ï¼ˆå¿…è¦ã«ãªã£ãŸã‚‰ï¼‰ã‚’è¡Œã†
+    /// - SaveData ã« payload ã‚’æ¸¡ã—ã¦å¾©å…ƒã™ã‚‹
     /// </summary>
     private SaveData LoadV1(BinaryReader r, SaveFileFormat.Header header)
     {
-        // ---- payloadæ‚èo‚µ ----
-        // header.PayloadLength ‚Íƒwƒbƒ_‚É‘‚©‚ê‚Ä‚¢‚½upayload‚ÌƒoƒCƒg”v
+        // ---- payloadå–ã‚Šå‡ºã— ----
+        // header.PayloadLength ã¯ãƒ˜ãƒƒãƒ€ã«æ›¸ã‹ã‚Œã¦ã„ãŸã€Œpayloadã®ãƒã‚¤ãƒˆæ•°ã€
         var payload = r.ReadBytes(header.PayloadLength);
 
-        // ”j‘¹‚È‚Ç‚Å payloadLength •ªæ‚ê‚È‚©‚Á‚½ê‡‚ğŒŸo
+        // ç ´æãªã©ã§ payloadLength åˆ†å–ã‚Œãªã‹ã£ãŸå ´åˆã‚’æ¤œå‡º
         if (payload == null || payload.Length != header.PayloadLength)
             throw new InvalidDataException("Payload length mismatch (corrupted save).");
 
-        // ---- flags ‚É‰‚¶‚Ä•œ†/‰ğ“€i¡‰ñ‚Í–¢À‘•j----
-        // ¦ À‘•‚·‚éê‡‚Íu•Û‘¶‚És‚Á‚½‡”Ô‚Ì‹tv‚Å–ß‚·‚Ì‚ªŠî–{
+        // ---- flags ã«å¿œã˜ã¦å¾©å·/è§£å‡ï¼ˆä»Šå›ã¯æœªå®Ÿè£…ï¼‰----
+        // â€» å®Ÿè£…ã™ã‚‹å ´åˆã¯ã€Œä¿å­˜æ™‚ã«è¡Œã£ãŸé †ç•ªã®é€†ã€ã§æˆ»ã™ã®ãŒåŸºæœ¬
         // if (header.Flags.HasFlag(SaveFileFormat.SaveFlags.Encrypted)) payload = Decrypt(payload);
         // if (header.Flags.HasFlag(SaveFileFormat.SaveFlags.Compressed)) payload = Decompress(payload);
 
-        // payloadiJSON UTF-8 bytesj‚ğ SaveData ‚É“n‚µ‚Ä•œŒ³
+        // payloadï¼ˆJSON UTF-8 bytesï¼‰ã‚’ SaveData ã«æ¸¡ã—ã¦å¾©å…ƒ
         var ret = new SaveData();
         ret.FromPayloadBytes(payload);
         return ret;
     }
 
     /// <summary>
-    /// w’èƒtƒ@ƒCƒ‹–¼‚ÌƒZ[ƒuƒf[ƒ^‚ğíœ‚·‚éB
+    /// æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«åã®ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤ã™ã‚‹ã€‚
     /// </summary>
     public void DeleteSave(string fileName)
     {
@@ -204,7 +205,7 @@ public class SaveManager
     }
 
     /// <summary>
-    /// ƒZ[ƒuƒfƒBƒŒƒNƒgƒŠ‚²‚Æíœ‚·‚éi‘SƒZ[ƒuƒf[ƒ^íœjB
+    /// ã‚»ãƒ¼ãƒ–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã”ã¨å‰Šé™¤ã™ã‚‹ï¼ˆå…¨ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿å‰Šé™¤ï¼‰ã€‚
     /// </summary>
     public void DeleteSaveAll()
     {
@@ -218,201 +219,337 @@ public class SaveManager
 
 
 
+// å°†æ¥çš„ã«ä¸‹è¨˜ã§å®Ÿè£…ã™ã‚‹
 
 
-
-
-
-
-
+//using System;
 //using System.IO;
 //using UnityEngine;
 
 ///// <summary>
-///// ƒZ[ƒu/ƒ[ƒh‚ğ’S“–‚·‚éƒ}ƒl[ƒWƒƒiƒVƒ“ƒOƒ‹ƒgƒ“jB
-///// MonoBehaviour ‚Å‚Í‚È‚­’ÊíƒNƒ‰ƒX‚È‚Ì‚ÅAƒV[ƒ“‘JˆÚ‚µ‚Ä‚à Instance ‚ÍˆÛ‚³‚ê‚éistaticQÆ‚ªc‚é‚½‚ßjB
+///// ã‚»ãƒ¼ãƒ–/ãƒ­ãƒ¼ãƒ‰ã®å…¥å‡ºåŠ›ã‚’æ‹…å½“ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
+///// - ä¿å­˜å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼ˆpersistentDataPathé…ä¸‹ï¼‰ã®ç®¡ç†
+///// - payloadï¼ˆJSONâ†’UTF8 bytesï¼‰ã®ç”Ÿæˆ/å¾©å…ƒã¯ BinaryDataManager ã«å§”è­²
+///// - ãƒ•ã‚¡ã‚¤ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆï¼ˆMagic/Version/Flags/PayloadLengthï¼‰ã¯ SaveFileFormat ã«å¾“ã†
+///// - .tmp ã‚’ä½¿ã£ãŸã€Œå®‰å…¨ãªæ›¸ãè¾¼ã¿ã€ï¼ˆæ›¸ãè¾¼ã¿å®Œäº†å¾Œã«æœ¬ä½“ã¸ç½®æ›ï¼‰
+///// 
+///// æ³¨æ„:
+///// - MonoBehaviour ã§ã¯ãªã„ç´”C#ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³
+///// - ç¾çŠ¶ã¯ã‚¹ãƒ¬ãƒƒãƒ‰ã‚»ãƒ¼ãƒ•ã§ã¯ãªã„ï¼ˆåŸºæœ¬ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰é‹ç”¨æƒ³å®šï¼‰
 ///// </summary>
-//public class SaveManager
+//public sealed class SaveManager : ISaveManager
 //{
-//    /// <summary>
-//    /// ƒVƒ“ƒOƒ‹ƒgƒ“À‘Ìi‰‰ñƒAƒNƒZƒX‚É¶¬j
-//    /// </summary>
+
 //    private static SaveManager instance;
 
+//    public static SaveManager Instance => instance ??= new SaveManager();
+
+
 //    /// <summary>
-//    /// ŠO•”‚©‚çæ“¾‚·‚éƒVƒ“ƒOƒ‹ƒgƒ““üŒûB
-//    /// instance ‚ª–¢¶¬‚È‚ç new SaveManager() ‚Å¶¬‚·‚éB
+//    /// ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«æ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ•ãƒ«ãƒ‘ã‚¹ã€‚
+//    /// ä¾‹: Application.persistentDataPath/Saves
 //    /// </summary>
-//    public static SaveManager Instance
+//    public string SaveDirectory { get; }
+
+//    /// <summary>
+//    /// ãƒ­ã‚°å‡ºåŠ›ã‚’è¡Œã†ã‹ã€‚
+//    /// </summary>
+//    public bool EnableLog { get; set; } = true;
+
+//    /// <summary>
+//    /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼ˆå¤–éƒ¨ã‹ã‚‰ new ã•ã›ãªã„ãŸã‚ privateï¼‰ã€‚
+//    /// subDirectoryName ã‚’å¤‰ãˆã‚‹ã¨ä¿å­˜å…ˆã®ã‚µãƒ–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’åˆ‡ã‚Šæ›¿ãˆã‚‰ã‚Œã‚‹ã€‚
+//    /// </summary>
+//    private SaveManager(string subDirectoryName = "Saves")
 //    {
-//        get
-//        {
-//            if (instance == null)
-//            {
-//                instance = new SaveManager();
-//            }
-//            return instance;
-//        }
+//        // persistentDataPath ã¯OS/ç«¯æœ«ã”ã¨ã®æ°¸ç¶šé ˜åŸŸ
+//        SaveDirectory = Path.Combine(Application.persistentDataPath, subDirectoryName);
+
+//        // èµ·å‹•æ™‚ç‚¹ã§ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä¿è¨¼
+//        EnsureDirectory();
 //    }
 
-//    // ƒo[ƒWƒ‡ƒ“•¶š—ñ
-//    private const string FileVersion = "0.0.1";
+
+//    // =========================================================
+//    // Save
+//    // =========================================================
 
 //    /// <summary>
-//    /// ƒZ[ƒuƒf[ƒ^•Û‘¶—pƒfƒBƒŒƒNƒgƒŠipersistentDataPath ”z‰ºj‚ğì‚é‚½‚ß‚ÌƒpƒX‚ğ•Ô‚·
-//    /// —á: .../AppName/save
+//    /// å…±é€šã‚»ãƒ¼ãƒ–ãƒ¡ã‚½ãƒƒãƒ‰
+//    /// 
+//    /// ä»»æ„ãƒ‡ãƒ¼ã‚¿ã‚’æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«åã§ä¿å­˜ã™ã‚‹ã€‚
+//    /// 
+//    /// ä¿å­˜å½¢å¼:
+//    /// - [SaveFileFormat.Header] + [payload bytes]
+//    ///   payload ã¯ BinaryDataManager ã«ã‚ˆã‚Šã€ŒJSON â†’ UTF8 bytesã€ã«å¤‰æ›ã•ã‚ŒãŸã‚‚ã®ã€‚
+//    /// 
+//    /// å®‰å…¨æ€§:
+//    /// - ç›´æ¥æœ¬ä½“ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãæ›ãˆãšã€ã„ã£ãŸã‚“ .tmp ã«æ›¸ãè¾¼ã‚“ã§ã‹ã‚‰ç½®æ›ã™ã‚‹ã“ã¨ã§ã€
+//    ///   ä¿å­˜ä¸­ã«ã‚¯ãƒ©ãƒƒã‚·ãƒ¥/ä¾‹å¤–ãŒèµ·ãã¦ã‚‚ã€Œå£Šã‚ŒãŸæœ¬ä½“ã€ã‚’æ®‹ã—ã«ããã™ã‚‹ã€‚
 //    /// </summary>
-//    string MakeSaveDir()
+//    /// <typeparam name="T">ä¿å­˜ã—ãŸã„ãƒ‡ãƒ¼ã‚¿å‹</typeparam>
+//    /// <param name="fileName">ä¿å­˜ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆSaveDirectory é…ä¸‹ï¼‰</param>
+//    /// <param name="data">ä¿å­˜ã™ã‚‹ãƒ‡ãƒ¼ã‚¿</param>
+//    public void Save<T>(string fileName, T data)
 //    {
-//        // Path.CombineF•¡”path‚ÌŒ‹‡ƒƒ\ƒbƒh
-//        return Path.Combine(Application.persistentDataPath, "save");
-//    }
+//        // ä¿å­˜å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒæ¶ˆã•ã‚Œã¦ã„ã‚‹/åˆå›ã§å­˜åœ¨ã—ãªã„å¯èƒ½æ€§ã«å‚™ãˆã€æ¯å›ä¿è¨¼ã—ã¦ãŠã
+//        EnsureDirectory();
 
-//    /// <summary>
-//    /// ƒtƒ@ƒCƒ‹–¼‚©‚çƒZ[ƒuƒf[ƒ^‚Ìƒtƒ‹ƒpƒX‚ğ‘g‚İ—§‚Ä‚é
-//    /// —á: .../AppName/save/saveData.dat
-//    /// </summary>
-//    string MakeSavePath(string fileName)
-//    {
-//        return Path.Combine(MakeSaveDir(), fileName);
-//    }
+//        // ä¿å­˜å…ˆã®ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’çµ„ã¿ç«‹ã¦ã‚‹ï¼ˆSaveDirectory + fileNameï¼‰
+//        var fullPath = GetFullPath(fileName);
 
-//    /// <summary>
-//    /// SaveData ‚ğw’èƒtƒ@ƒCƒ‹–¼‚Å•Û‘¶‚·‚éiƒoƒCƒiƒŠŒ`®jB
-//    /// “à•”“I‚É‚Í MemoryStream ‚É‘‚«‚İ ¨ byte[] ‚É‚µ‚Äƒtƒ@ƒCƒ‹‚ÉWriteAllBytes‚·‚éB
-//    /// </summary>
-//    public void Save(SaveData saveData, string fileName)
-//    {
-//        // •Û‘¶æƒtƒ‹ƒpƒX‚ğ¶¬
-//        var path = MakeSavePath(fileName);
-//        var tempPath = path + ".tmp"; // ˆêƒtƒ@ƒCƒ‹
-//        var dir = MakeSaveDir();      // g‚¢‰ñ‚µ
+//        // å®‰å…¨ãªç½®æ›ã®ãŸã‚ã«ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã¸æ›¸ãï¼ˆä¾‹: xxx.dat.tmpï¼‰
+//        var tempPath = fullPath + ".tmp";
 
+//        // ãƒ‡ãƒ¼ã‚¿æœ¬ä½“ã‚’ payloadï¼ˆbyte[]ï¼‰ã«å¤‰æ›ã™ã‚‹
+//        // ã“ã“ã§ã¯ã€ŒJSONæ–‡å­—åˆ— â†’ UTF8ãƒã‚¤ãƒˆåˆ—ã€ã¨ã„ã†å®Ÿè£…ï¼ˆBinaryDataManager ã«å§”è­²ï¼‰
+//        var payload = BinaryDataManager.ToBytes(data);
 
-//        try // —áŠO‚Å—‚¿‚È‚¢‚æ‚¤‚É
-//        {
-//            // •Û‘¶ƒfƒBƒŒƒNƒgƒŠ‚ª–³‚¯‚ê‚Îì¬
-//            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-//            byte[] bytes;
-
-//            // ƒƒ‚ƒŠã‚Éˆê’U‘‚«‚ñ‚Å‚©‚çƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚é
-//            using (MemoryStream stream = new MemoryStream())
-//            {
-//                // ƒoƒCƒiƒŠ‘‚«‚İ—pƒ‰ƒCƒ^[
-//                using (BinaryWriter writer = new BinaryWriter(stream))
-//                {
-//                    // æ“ª‚Éƒo[ƒWƒ‡ƒ“•¶š—ñ‚ğ‘‚¢‚Ä‚¨‚­iŒİŠ·«ƒ`ƒFƒbƒN—pj
-//                    writer.Write(FileVersion);
-
-//                    // SaveData ‘¤‚Ì‘‚«‚İˆ—iÀÛ‚Ìƒf[ƒ^j‚ğŒÄ‚Ô
-//                    saveData.Write(writer);
-
-//                    writer.Flush();
-//                    bytes = stream.ToArray();
-//                }
-//                // temp ‚ğì‚é
-//                File.WriteAllBytes(tempPath, bytes);
-
-//                // ‚±‚±‚ÅˆÃ†‰»/ˆ³k‚ğ“ü‚ê‚é‘z’èiŒ»İ‚Í–¢À‘•j
-//                // —á: stream.ToArray() ‚ğˆÃ†‰»‚µ‚Ä‚©‚ç•Û‘¶‚·‚éA‚È‚Ç
-
-//                // MemoryStream‚Ì’†gibyte”z—ñj‚ğƒtƒ@ƒCƒ‹‚É‘‚«‚Ş
-//                // ’uŠ·i“¯–¼‚ª‚ ‚ê‚Îã‘‚«j
-//                if (File.Exists(path)) File.Delete(path);
-//                File.Move(tempPath, path);
-
-//                Debug.Log("Saved to " + path);
-//            }
-
-//        }
-//        catch (System.Exception e)
-//        {
-//            Debug.LogError($"Save failed: {e}");
-
-//            // temp ‚ªc‚Á‚Ä‚¢‚½‚ç‘|œ
-//            try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { }
-//        }
-//    }
-
-//    /// <summary>
-//    /// w’èƒtƒ@ƒCƒ‹–¼‚©‚ç SaveData ‚ğƒ[ƒh‚·‚éB
-//    /// ƒtƒ@ƒCƒ‹‚ª–³‚¢ê‡‚Í null ‚ğ•Ô‚·B
-//    /// </summary>
-//    public SaveData Load(string fileName)
-//    {
-//        // “Ç‚İ‚İæƒtƒ‹ƒpƒX
-//        var path = MakeSavePath(fileName);
-
-//        // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢‚È‚çƒ[ƒh•s”\
-//        if (!File.Exists(path)) return null;
-
-//        Debug.Log("Load to " + path);
+//        // ä¿å­˜ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼ˆåœ§ç¸®/æš—å·åŒ–ãªã©ï¼‰ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
+//        // ç¾çŠ¶ã¯ä½•ã‚‚ã—ãªã„ãŸã‚ None
+//        var flags = SaveFileFormat.SaveFlags.None;
 
 //        try
 //        {
-//            // ƒtƒ@ƒCƒ‹‚ÌƒoƒCƒg—ñ‚ğ‘S“Ç‚İ‚İ
-//            byte[] bytes = File.ReadAllBytes(path);
-
-//            // ‚±‚±‚Å•œ†‰»/‰ğ“€‚ğ“ü‚ê‚é‘z’èiŒ»İ‚Í–¢À‘•j
-//            // —á: bytes ‚ğ•œ†‚µ‚Ä‚©‚ç MemoryStream ‚É“n‚·A‚È‚Ç
-
-
-//            // ƒoƒCƒg—ñ‚ğƒƒ‚ƒŠƒXƒgƒŠ[ƒ€‚ÉÚ‚¹‚ÄABinaryReader‚Å‡‚É“Ç‚Ş
-//            using (MemoryStream stream = new MemoryStream(bytes))
+//            // â˜… ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã€Œãƒ˜ãƒƒãƒ€ + payloadã€ã‚’æ›¸ãè¾¼ã‚€
+//            // FileMode.Create   : æ—¢ã«å­˜åœ¨ã—ã¦ã„ã¦ã‚‚ä½œã‚Šç›´ã™ï¼ˆä¸Šæ›¸ãï¼‰
+//            // FileAccess.Write  : æ›¸ãè¾¼ã¿å°‚ç”¨
+//            // FileShare.None    : æ›¸ãè¾¼ã¿ä¸­ã«ä»–ãŒæ´ã‚ãªã„ã‚ˆã†ã«ã™ã‚‹ï¼ˆèª­ã¿/æ›¸ãã®ç«¶åˆé˜²æ­¢ï¼‰
+//            using (var fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
+//            using (var w = new BinaryWriter(fs))
 //            {
-//                using (BinaryReader reader = new BinaryReader(stream))
-//                {
-//                    // æ“ª‚Ìƒo[ƒWƒ‡ƒ“•¶š—ñ‚ğ“Ç‚Ş
-//                    var version = reader.ReadString();
+//                // å…ˆé ­ã«ãƒ˜ãƒƒãƒ€ã‚’æ›¸ã
+//                // - Magicï¼ˆã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«è­˜åˆ¥ï¼‰
+//                // - FormatVersionï¼ˆäº’æ›æ€§åˆ¤å®šï¼‰
+//                // - Flagsï¼ˆåœ§ç¸®/æš—å·åŒ–ãªã©ã®æœ‰ç„¡ï¼‰
+//                // - PayloadLengthï¼ˆã“ã®å¾Œã«ç¶šãpayloadã®é•·ã•ï¼‰
+//                SaveFileFormat.WriteHeader(w, flags, payload.Length);
 
-//                    // ‘z’èƒo[ƒWƒ‡ƒ“‚Æˆê’v‚µ‚È‚¢ê‡‚ÍŒİŠ·«‚È‚µ‚Æ‚µ‚Ä¸”sˆµ‚¢
-//                    if (version != FileVersion)
-//                    {
-//                        Debug.LogError("ƒZ[ƒuƒf[ƒ^‚Ìƒo[ƒWƒ‡ƒ“‚ªˆÙ‚È‚è‚Ü‚·");
-//                        return null;
-//                    }
-
-//                    // •Ô‹p‚·‚é SaveData ‚ğ¶¬
-//                    var ret = new SaveData();
-
-//                    // SaveData ‘¤‚Ì“Ç‚İ‚İˆ—iÀÛ‚Ìƒf[ƒ^j‚ğŒÄ‚Ô
-//                    ret.Read(reader);
-
-//                    return ret;
-//                }
+//                // ãƒ˜ãƒƒãƒ€ã®ç›´å¾Œã« payload ã‚’æ›¸ãï¼ˆå¾©å…ƒæ™‚ã¯ PayloadLength åˆ†ã ã‘èª­ã‚€ï¼‰
+//                w.Write(payload);
 //            }
 
+//            // â˜… æœ¬ä½“ãƒ•ã‚¡ã‚¤ãƒ«ã¸ç½®æ›ã™ã‚‹
+//            // æ—¢å­˜ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯å‰Šé™¤ã—ã¦ã‹ã‚‰ Move
+//            // ï¼ˆOSã«ã‚ˆã£ã¦ã¯ Move ãŒä¸Šæ›¸ãã§ããªã„ãŸã‚ Deleteâ†’Move ã‚’æ¡ç”¨ï¼‰
+//            if (File.Exists(fullPath)) File.Delete(fullPath);
+//            File.Move(tempPath, fullPath);
+
+//            // ä»»æ„ãƒ­ã‚°
+//            if (EnableLog)
+//                Debug.Log($"[SaveManager] Saved: {fullPath} (payload {payload.Length} bytes)");
 //        }
-//        catch (System.Exception e)
+//        catch (Exception ex)
 //        {
-//            Debug.LogError($"Load failed: {e}");
-//            return null;
+//            // å¤±æ•—æ™‚ï¼šé€”ä¸­ã¾ã§æ›¸ã‹ã‚ŒãŸ .tmp ãŒæ®‹ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ã€å¯èƒ½ãªã‚‰å‰Šé™¤ã™ã‚‹
+//            // ï¼ˆå‰Šé™¤å¤±æ•—ã—ã¦ã‚‚æœ¬ä½“ã¯åŸºæœ¬çš„ã«ç„¡äº‹ãªã®ã§æ¡ã‚Šã¤ã¶ã™ï¼‰
+//            TryDeleteSilently(tempPath);
+
+//            if (EnableLog)
+//                Debug.LogError($"[SaveManager] Save failed: {fullPath}\n{ex}");
+
+//            // ä¿å­˜å¤±æ•—ã¯ä¸Šä½ã§ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°ã§ãã‚‹ã‚ˆã†ä¾‹å¤–ã‚’å†ã‚¹ãƒ­ãƒ¼
+//            throw;
 //        }
 //    }
 
+
+//    // =========================================================
+//    // Load
+//    // =========================================================
+
 //    /// <summary>
-//    /// w’èƒtƒ@ƒCƒ‹–¼‚ÌƒZ[ƒuƒf[ƒ^‚ğíœ‚·‚é
+//    /// å…±é€šãƒ­ãƒ¼ãƒ‰ãƒ¡ã‚½ãƒƒãƒ‰
+//    /// 
+//    /// æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰èª­ã¿è¾¼ã¿ã‚’è©¦ã¿ã‚‹ã€‚
+//    /// - æˆåŠŸæ™‚ trueï¼ˆout data ã«å¾©å…ƒçµæœï¼‰
+//    /// - å¤±æ•—æ™‚ falseï¼ˆout data ã¯ new T() ã®ã¾ã¾ï¼‰
+//    /// 
+//    /// äº’æ›æ€§:
+//    /// - SaveFileFormat ãƒ˜ãƒƒãƒ€ä»˜ããƒ•ã‚¡ã‚¤ãƒ«ã‚’åŸºæœ¬ã¨ã—ã¦èª­ã‚€
+//    /// - ãƒ˜ãƒƒãƒ€ãŒç„¡ã„ï¼ˆæ—§å½¢å¼ï¼‰å ´åˆã¯ã€Œå…¨ä½“ã‚’payloadã€ã¨ã—ã¦èª­ã‚€ãƒ¬ã‚¬ã‚·ãƒ¼ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚‚è¡Œã†
 //    /// </summary>
-//    public void DeleteSave(string fileName)
+//    public bool TryLoad<T>(string fileName, out T data) where T : new()
 //    {
-//        var path = MakeSavePath(fileName);
-//        if (File.Exists(path))
+//        // å‘¼ã³å‡ºã—å´ãŒ null ã‚’æ´ã¾ãªã„ã‚ˆã†ã«åˆæœŸå€¤ã‚’å…ˆã«ä½œã£ã¦ãŠã
+//        data = new T();
+
+//        var fullPath = GetFullPath(fileName);
+
+//        // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ­£å¸¸ç³»ã¨ã—ã¦ false
+//        if (!File.Exists(fullPath))
 //        {
-//            File.Delete(path);
+//            if (EnableLog) Debug.Log($"[SaveManager] ãƒ­ãƒ¼ãƒ‰ã§ãã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“: {fullPath}");
+//            return false;
+//        }
+
+//        try
+//        {
+//            // èª­ã¿è¾¼ã¿ã¯å…±æœ‰å¯ï¼ˆFileShare.Readï¼‰
+//            using (var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+//            using (var r = new BinaryReader(fs))
+//            {
+//                SaveFileFormat.Header h;
+
+//                try
+//                {
+//                    // â˜… ãƒ˜ãƒƒãƒ€ã‚’èª­ã‚€ï¼ˆMagic/Version/Flags/PayloadLengthï¼‰
+//                    h = SaveFileFormat.ReadHeader(r);
+//                }
+//                catch (InvalidDataException) // TryFromBytes ãŒæˆåŠŸã™ã‚‹ã¨ã€out data ã«å¾©å…ƒã—ãŸ T ãŒä»£å…¥ã•ã‚Œã‚‹
+//                {
+//                    // â˜… ãƒ¬ã‚¬ã‚·ãƒ¼ï¼ˆãƒ˜ãƒƒãƒ€ç„¡ã—ï¼‰ã¨ã—ã¦å…¨ä½“ã‚’ payload ã¨ã¿ãªã—ã¦èª­ã‚€
+//                    fs.Position = 0;
+//                    var legacyBytes = r.ReadBytes((int)fs.Length);
+
+//                    if (!BinaryDataManager.TryFromBytes(legacyBytes, out data))
+//                    {
+//                        if (EnableLog) Debug.LogWarning($"[SaveManager] ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ: {fullPath}");
+//                        return false;
+//                    }
+
+//                    if (EnableLog)
+//                        Debug.Log($"[SaveManager] ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«æˆåŠŸã—ã¾ã—ãŸ: {fullPath} ({legacyBytes.Length} bytes)");
+//                    return true;
+//                }
+
+//                // æœªæ¥ãƒãƒ¼ã‚¸ãƒ§ãƒ³ï¼ˆã“ã¡ã‚‰ãŒå¯¾å¿œã—ã¦ã„ãªã„æ–°å½¢å¼ï¼‰ãªã‚‰å¼¾ã
+//                // â€» æ—§å½¢å¼ã®èª­ã¿å¯¾å¿œã‚’å¢—ã‚„ã™ãªã‚‰ã€ã“ã“ã§ version åˆ†å²ã‚’ä½œã‚‹
+//                if (h.FormatVersion > SaveFileFormat.CurrentFormatVersion)
+//                {
+//                    if (EnableLog)
+//                        Debug.LogWarning($"[SaveManager] ãƒ•ã‚¡ã‚¤ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“: {h.FormatVersion} (current {SaveFileFormat.CurrentFormatVersion})");
+//                    return false;
+//                }
+
+//                // payload é•·ãŒä¸æ­£ãªã‚‰å¼¾ãï¼ˆç ´æ/æ”»æ’ƒçš„å…¥åŠ›å¯¾ç­–ï¼‰
+//                // â€»ã‚ˆã‚Šå …ãã™ã‚‹ãªã‚‰ã€Œæ®‹ã‚Šã‚¹ãƒˆãƒªãƒ¼ãƒ é•· >= PayloadLengthã€ã‚‚ãƒã‚§ãƒƒã‚¯æ¨å¥¨
+//                if (h.PayloadLength < 0) return false;
+
+//                // payload éƒ¨åˆ†ã ã‘èª­ã‚€
+//                var payload = r.ReadBytes(h.PayloadLength);
+
+//                // èª­ã‚ãŸé•·ã•ãŒè¶³ã‚Šãªã„ï¼é€”ä¸­ã§åˆ‡ã‚Œã¦ã„ã‚‹ï¼ˆç ´æï¼‰
+//                if (payload.Length != h.PayloadLength)
+//                {
+//                    if (EnableLog) Debug.LogWarning($"[SaveManager] ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ãƒ¼ã‚¿ãŒç ´æã—ã¦ã„ã¾ã™: {fullPath}");
+//                    return false;
+//                }
+
+//                // flagsï¼ˆåœ§ç¸®/æš—å·åŒ–ï¼‰ãŒã‚ã‚‹å ´åˆã€ã“ã“ã§ payload ã‚’å¾©å·/ä¼¸é•·ã—ã¦ã‹ã‚‰å¾©å…ƒã™ã‚‹
+//                // if (h.Flags.HasFlag(SaveFileFormat.SaveFlags.Compressed)) payload = Decompress(payload);
+//                // if (h.Flags.HasFlag(SaveFileFormat.SaveFlags.Encrypted))  payload = Decrypt(payload);
+
+//                // payload ã‚’ T ã«å¾©å…ƒ
+//                if (!BinaryDataManager.TryFromBytes(payload, out data))
+//                {
+//                    if (EnableLog) Debug.LogWarning($"[SaveManager] ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ: {fullPath}");
+//                    return false;
+//                }
+
+//                if (EnableLog)
+//                    Debug.Log($"[SaveManager] ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«æˆåŠŸã—ã¾ã—ãŸ: {fullPath} (payload {payload.Length} bytes, flags={h.Flags}, ver={h.FormatVersion})");
+
+//                return true;
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            // I/Oä¾‹å¤–ãªã©
+//            if (EnableLog) Debug.LogError($"[SaveManager] äºˆæœŸã›ã¬ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ: {fullPath}\n{ex}");
+//            return false;
 //        }
 //    }
 
+//    // =========================================================
+//    // File utilities
+//    // =========================================================
+
 //    /// <summary>
-//    /// ƒZ[ƒuƒfƒBƒŒƒNƒgƒŠ‚²‚Æíœi‘SƒZ[ƒuƒf[ƒ^íœj
+//    /// æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ï¼ˆSaveDirectory é…ä¸‹ã‚’å‰æï¼‰ã€‚
 //    /// </summary>
-//    public void DeleteSaveAll()
+//    public bool Exists(string fileName) => File.Exists(GetFullPath(fileName));
+
+
+//    /// <summary>
+//    /// ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤ãƒ¡ã‚½ãƒƒãƒ‰
+//    /// æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹ã€‚
+//    /// 
+//    /// æŒ™å‹•:
+//    /// - å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„ï¼ˆno-opï¼‰
+//    â€” - å­˜åœ¨ã™ã‚‹å ´åˆã¯ File.Delete ã§å‰Šé™¤ã™ã‚‹
+//    /// - å‰Šé™¤ã«å¤±æ•—ã—ãŸå ´åˆã¯ä¾‹å¤–ã‚’æŠ•ã’ã‚‹ï¼ˆå‘¼ã³å‡ºã—å´ã§ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°å¯èƒ½ï¼‰
+//    /// 
+//    /// ç”¨é€”ä¾‹:
+//    /// - æœªã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ï¼ˆunsaved.datï¼‰ã‚’ä¸è¦ã«ãªã£ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§æ¶ˆã™
+//    /// - ã‚»ãƒ¼ãƒ–ã‚¹ãƒ­ãƒƒãƒˆã‚’æ¶ˆå»ã™ã‚‹ãªã©
+//    /// </summary>
+//    /// <param name="fileName">SaveDirectory é…ä¸‹ã®ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+//    public void Delete(string fileName)
 //    {
-//        var path = MakeSaveDir();
-//        if (Directory.Exists(path))
+//        // ä¿å­˜ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª + ãƒ•ã‚¡ã‚¤ãƒ«å ã‹ã‚‰ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’ç”Ÿæˆ
+//        var fullPath = GetFullPath(fileName);
+
+//        // ãƒ•ã‚¡ã‚¤ãƒ«ãŒç„¡ã‘ã‚Œã°å‰Šé™¤ä¸è¦ãªã®ã§ä½•ã‚‚ã—ãªã„
+//        // ï¼ˆã€Œå‰Šé™¤ã—ãŸã„ã€ã¨ã„ã†æ„å›³ã«å¯¾ã—ã¦â€œæ—¢ã«ç„¡ã„â€ã¯æˆåŠŸæ‰±ã„ï¼‰
+//        if (!File.Exists(fullPath)) return;
+
+//        try
 //        {
-//            // true: ƒTƒuƒfƒBƒŒƒNƒgƒŠ/ƒtƒ@ƒCƒ‹‚àŠÜ‚ß‚Äíœ
-//            Directory.Delete(path, true);
+//            // ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤ï¼ˆã‚¢ã‚¯ã‚»ã‚¹æ¨©ãƒ»ãƒ­ãƒƒã‚¯ç­‰ã§ä¾‹å¤–ãŒèµ·ãå¾—ã‚‹ï¼‰
+//            File.Delete(fullPath);
+
+//            // ä»»æ„ãƒ­ã‚°
+//            if (EnableLog)
+//                Debug.Log($"[SaveManager] Deleted: {fullPath}");
+//        }
+//        catch (Exception ex)
+//        {
+//            // å‰Šé™¤å¤±æ•—ã¯çŠ¶æ³ã«ã‚ˆã£ã¦é‡å¤§ï¼ˆãƒ­ãƒƒã‚¯/æ¨©é™/IOéšœå®³ï¼‰ãªã®ã§ãƒ­ã‚°ã—ã¦å‘¼ã³å‡ºã—å´ã¸ä¼ãˆã‚‹
+//            if (EnableLog)
+//                Debug.LogError($"[SaveManager] Delete failed: {fullPath}\n{ex}");
+
+//            // å‘¼ã³å‡ºã—å´ã§å¾©æ—§ãƒ»ãƒªãƒˆãƒ©ã‚¤ãƒ»ãƒ¦ãƒ¼ã‚¶ãƒ¼é€šçŸ¥ãªã©ã§ãã‚‹ã‚ˆã†ä¾‹å¤–ã‚’å†ã‚¹ãƒ­ãƒ¼
+//            throw;
+//        }
+//    }
+
+//    // =========================================================
+//    // Private helpers
+//    // =========================================================
+
+//    /// <summary>
+//    /// SaveDirectory ãŒå­˜åœ¨ã—ãªã‘ã‚Œã°ä½œæˆã™ã‚‹ã€‚
+//    /// </summary>
+//    private void EnsureDirectory()
+//    {
+//        if (!Directory.Exists(SaveDirectory))
+//            Directory.CreateDirectory(SaveDirectory);
+//    }
+
+//    /// <summary>
+//    /// ä¿å­˜ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¨ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’çµ„ã¿ç«‹ã¦ã‚‹ã€‚
+//    /// </summary>
+//    private string GetFullPath(string fileName) => Path.Combine(SaveDirectory, fileName);
+
+//    /// <summary>
+//    /// ä¾‹å¤–ã‚’æ¡ã‚Šã¤ã¶ã—ã¦å‰Šé™¤ã‚’è©¦ã™ã€‚
+//    /// - .tmp å¾Œå§‹æœ«ãªã©ã€Œå¤±æ•—ã—ã¦ã‚‚è‡´å‘½ã§ã¯ãªã„ã€ç”¨é€”å‘ã‘
+//    /// </summary>
+//    private static void TryDeleteSilently(string path)
+//    {
+//        try
+//        {
+//            if (File.Exists(path)) File.Delete(path);
+//        }
+//        catch
+//        {
+//            // ä¾‹å¤–ã‚’ç„¡è¦–ã—ã¦é–¢æ•°ã‚’çµ‚ãˆã‚‹
 //        }
 //    }
 //}
+
+
+
+
+

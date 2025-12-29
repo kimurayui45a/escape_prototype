@@ -84,7 +84,7 @@
 //        var slot = GetSelectedSlotOrDefault();
 
 //        // 現在状態をスナップショット化
-//        var snapshot = CreateSnapshot(playFileNumber: slot);
+//        var snapshot = CreateSnapshot(playSlotNumber: slot);
 
 //        // SaveDataへ反映（未セーブ領域）
 //        saveData.SaveParam.UnSavedPlayGameData = snapshot;
@@ -102,9 +102,9 @@
 //        int slot = GetSelectedSlotOrDefault();
 
 //        // 現在状態をスナップショット化（スロット番号も入れる）
-//        var snapshot = CreateSnapshot(playFileNumber: slot);
+//        var snapshot = CreateSnapshot(playSlotNumber: slot);
 
-//        // 対象スロットへ格納（PlayFileNumberで検索するので順番が崩れても安全）
+//        // 対象スロットへ格納（PlaySlotNumberで検索するので順番が崩れても安全）
 //        var list = saveData.SaveParam.PlayGameDataList;
 //        var target = FindSlotByNumber(list, slot);
 //        if (target == null)
@@ -189,14 +189,14 @@
 //    /// <summary>
 //    /// 現在のゲーム状態を PlayGameData にまとめて生成する。
 //    /// </summary>
-//    private PlayGameData CreateSnapshot(int playFileNumber)
+//    private PlayGameData CreateSnapshot(int playSlotNumber)
 //    {
 //        var now = TimeUtil.NowUtcUnixSeconds();
 
 //        var data = new PlayGameData
 //        {
 //            LastPlaySaveTime = now,
-//            PlayFileNumber = playFileNumber,
+//            PlaySlotNumber = playSlotNumber,
 
 //            // Sceneは「セーブはID」方針なので、SceneIdを保存する
 //            LastSceneId = sceneDataManager != null
@@ -260,9 +260,9 @@
 //    }
 
 //    /// <summary>
-//    /// PlayFileNumber が一致するスロットを探す。
+//    /// PlaySlotNumber が一致するスロットを探す。
 //    /// </summary>
-//    private PlayGameData FindSlotByNumber(List<PlayGameData> list, int playFileNumber)
+//    private PlayGameData FindSlotByNumber(List<PlayGameData> list, int playSlotNumber)
 //    {
 //        if (list == null) return null;
 
@@ -270,7 +270,7 @@
 //        {
 //            var d = list[i];
 //            if (d == null) continue;
-//            if (d.PlayFileNumber == playFileNumber) return d;
+//            if (d.PlaySlotNumber == playSlotNumber) return d;
 //        }
 
 //        return null;
